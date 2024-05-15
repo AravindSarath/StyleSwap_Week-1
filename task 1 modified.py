@@ -23,7 +23,7 @@ def convolution(image, kernel):
     kernel_h=kernel.shape[0] #gives us the height of the kernel
     kernel_w=kernel.shape[1]  #gives us the width of the kernel
 
-    h=kernel_h//2 #this step is necessary because of the way in which the kernel is multiplied to the image
+    h=kernel_h//2 #this step is necessary because of the way in which the kernel is multiplied to the image , it is important to get the correct range of the for loop used below
     w=kernel_w//2
     #while convoluting the image and kernel we need to make sure that it is done in the correct manner and in the same order
     image_conv=np.zeros(image.shape)
@@ -59,13 +59,13 @@ def convolution1(image, kernel):
                     sum+=kernel[m][n]*image[i-h+m][j-w+n]
             image_conv[i][j]=sum/273
     return image_conv
-def norm(img1,img2):
-    img_copy=np.zeros(img1.shape)
+def norm(img1,img2): #this function
+    img_copy=np.zeros(img1.shape)#image with initial zero values
     for i in range(img1.shape[0]):
         for j in range(img1.shape[1]):
             q=(img1[i][j]**2 + img2[i][j]**2)**(1/2)
-            if(q>55):
-                img_copy[i][j]=255
+            if(q>55):#threshold
+                img_copy[i][j]=255#obtaining binary image
             else:
                 img_copy[i][j]=0
     return img_copy
@@ -95,7 +95,7 @@ kernelg[4,1]=4
 kernelg[4,2]=7
 kernelg[4,3]=4
 kernelg[4,4]=1
-sample=convolution1(sampl,kernelg)
+sample=convolution1(sampl,kernelg)#apply gaussian blur
 
 #kernel = np.zeros(shape=(3,3))
 kernel=np.zeros([3,3]) #creating kernel as 3X3 matrix initialising all values as zero
@@ -109,6 +109,7 @@ kernel[1,2]=0
 kernel[2,0]=1
 kernel[2,1]=2
 kernel[2,2]=1
+#kernel for scharr filter
 ##kernel[0,0]=-3
 ##kernel[0,1]=-10
 ##kernel[0,2]=-3
@@ -131,6 +132,7 @@ kernel[1,2]=1
 kernel[2,0]=-2
 kernel[2,1]=0
 kernel[2,2]=2
+#kernel scharr filter
 ##kernel[0,0]=-3
 ##kernel[0,1]=0
 ##kernel[0,2]=3
@@ -142,9 +144,9 @@ kernel[2,2]=2
 ##kernel[2,2]=3
 gx = convolution(sample,kernel)
 #cv2.imshow("gradient_x",gx)
-g_sobel=norm(gx,gy)
+g_sobel=norm(gx,gy)#combining both sobel x and sobel y
 
-cv2.imshow("Sobel_edge",g_sobel)
+cv2.imshow("Sobel_edge",g_sobel)#output
 #cv2.imshow("original image",sample)
 
 cv2.waitKey(0)
